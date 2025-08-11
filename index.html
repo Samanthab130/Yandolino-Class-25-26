@@ -4,75 +4,50 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>RECC • Ms. Yandolino — Class Mom Portal</title>
-  <link rel="stylesheet" href="styles.css" />
-  <!-- SheetJS for real .xlsx export -->
+  <link rel="stylesheet" href="./styles.css?v=3" />
+  <!-- SheetJS for .xlsx export -->
   <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.20.2/dist/xlsx.full.min.js"></script>
-  <script defer src="app.js"></script>
+  <script defer src="./app.js?v=3"></script>
 </head>
 <body>
-  <header class="topbar">
-    <div class="wrap">
-      <div>
-        <h1>RECC • Class Mom Portal</h1>
-        <p>Teacher: <strong>Ms. Yandolino</strong></p>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="brand">
+        <div class="brand-badge" aria-hidden="true">🏫</div>
+        <div class="brand-text">
+          <h1 id="schoolName">RECC • Kindergarten</h1>
+          <p class="muted">Teacher: <strong id="teacherName">Ms. Yandolino</strong></p>
+        </div>
       </div>
-      <nav>
-        <a class="btn" href="https://www.bellmoreschools.org/o/recc" target="_blank" rel="noreferrer">School Calendar</a>
+      <nav class="header-actions">
+        <a class="btn ghost" id="schoolCalendar" target="_blank" rel="noreferrer">School Calendar</a>
       </nav>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs container" role="tablist" aria-label="Class portal sections">
+      <button class="tab is-active" role="tab" aria-selected="true" aria-controls="panel-roster" id="tab-roster">Class List</button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-events" id="tab-events">Holiday & Class Events</button>
     </div>
   </header>
 
-  <main class="wrap">
-    <!-- Roster -->
-    <section class="card">
-      <h2>Class Roster</h2>
-      <div class="row">
-        <input id="new-student" type="text" placeholder="Add student and press Enter" />
-        <button id="export-roster" class="btn">Export Roster (.xlsx)</button>
+  <!-- Panels -->
+  <main class="container">
+    <!-- ROSTER -->
+    <section id="panel-roster" class="panel" role="tabpanel" aria-labelledby="tab-roster">
+      <div class="card">
+        <h2>Class Roster</h2>
+        <p class="muted">Type a name and press <kbd>Enter</kbd>. The list auto-sorts A–Z.</p>
+
+        <div class="row">
+          <input id="new-student" type="text" placeholder="Add student and press Enter" aria-label="Add student" />
+          <button id="export-roster" class="btn">Export Roster (.xlsx)</button>
+        </div>
+
+        <ul id="roster" class="list"></ul>
       </div>
-      <ul id="roster" class="list"></ul>
-      <small class="muted">Roster is automatically kept in A–Z order.</small>
     </section>
 
-    <!-- Events -->
-    <section class="card">
-      <h2>Class Events & Parties</h2>
-
-      <div class="grid-2">
-        <div>
-          <label class="lbl">Event Title</label>
-          <input id="ev-title" type="text" placeholder="e.g., Fall Harvest Party" />
-        </div>
-        <div>
-          <label class="lbl">Date</label>
-          <input id="ev-date" type="date" />
-        </div>
-        <div>
-          <label class="lbl">Type</label>
-          <select id="ev-type">
-            <option>Party</option>
-            <option>Class</option>
-            <option>Field</option>
-          </select>
-        </div>
-        <div>
-          <label class="lbl">Details</label>
-          <input id="ev-details" type="text" placeholder="Notes, allergy info, etc." />
-        </div>
-      </div>
-
-      <div class="row">
-        <button id="add-event" class="btn">Add Event</button>
-        <button id="export-events" class="btn secondary">Export Events (.xlsx)</button>
-      </div>
-
-      <div id="events" class="events"></div>
-      <small class="muted">Click “Edit sign-ups” on an event to assign Snacks, Supplies, and Volunteers.</small>
-    </section>
-  </main>
-
-  <footer class="wrap footer">
-    <small>© <span id="yy"></span> RECC Kindergarten • Made for families</small>
-  </footer>
-</body>
-</html>
+    <!-- EVENTS -->
+    <section id="pane
