@@ -1,107 +1,78 @@
-Here’s the full code for your **Yandolino-Class-25-26** project, ready to add to GitHub:
-
----
-
-**src/App.js**
-```javascript
-import React, { useState } from "react";
-import * as XLSX from "xlsx";
-
-const TEACHER_NAME = "Ms. Yandolino";
-const SCHOOL_NAME = "Charles A. Reinhard Early Childhood Center";
-const SCHOOL_SHORT = "RECC";
-const SCHOOL_CALENDAR_URL = "https://www.bellmoreschools.org/o/recc";
-
-const INITIAL_STUDENTS = [
-  "Aria Glenis",
-  "Blake Stein",
-  "Christopher Oakes",
-  "Cora Yakubovsky",
-  "Giovani Guidice",
-  "Hazel Maksym",
-  "Ivy Ducharme",
-  "Johanna Rodriguez",
-  "Leonardo Cocuzzo",
-  "Mila Yakubovsky",
-  "Nicko Glenis",
-  "Olivia Barracca",
-  "RJ Cigna",
-  "Ryan Burstein",
-  "Sienna Bomparola",
-  "Zachary Maya"
-].sort();
-
-const PRESET_EVENTS = [
-  { title: "Welcome Breakfast", date: "2025-09-05", details: "Coffee, juice, and muffins after drop-off.", type: "Class", snacks: [], supplies: [], volunteers: [] },
-  { title: "Fall Harvest Party", date: "2025-10-31", details: "Costumes optional, nut-free snacks.", type: "Party", snacks: [], supplies: [], volunteers: [] },
-];
-
-function exportToExcel(events) {
-  const data = events.map(e => ({
-    Title: e.title,
-    Date: e.date,
-    Type: e.type,
-    Details: e.details,
-    Snacks: (e.snacks || []).join(", "),
-    Supplies: (e.supplies || []).join(", "),
-    Volunteers: (e.volunteers || []).join(", ")
-  }));
-  const ws = XLSX.utils.json_to_sheet(data);
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, "Events");
-  XLSX.writeFile(wb, "class_parties.xlsx");
-}
-
-export default function ClassMomApp() {
-  const [students, setStudents] = useState(INITIAL_STUDENTS);
-  const [events, setEvents] = useState(PRESET_EVENTS);
-
-  const addStudent = name => {
-    if (!name.trim()) return;
-    const updated = [...students, name.trim()].sort();
-    setStudents(updated);
-  };
-
-  return (
-    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
-      <h1>{SCHOOL_SHORT} - Kindergarten Class Mom Portal</h1>
-      <h2>Teacher: {TEACHER_NAME}</h2>
-      <a href={SCHOOL_CALENDAR_URL} target="_blank" rel="noreferrer">School Calendar</a>
-
-      <section style={{ marginTop: 20 }}>
-        <h3>Class Roster</h3>
-        <ul>
-          {students.map(s => <li key={s}>{s}</li>)}
-        </ul>
-        <input type="text" placeholder="Add Student" onKeyDown={e => e.key === 'Enter' && addStudent(e.target.value)} />
-      </section>
-
-      <section style={{ marginTop: 20 }}>
-        <h3>Events</h3>
-        {events.map((e, idx) => (
-          <div key={idx} style={{ border: "1px solid #ccc", margin: "10px 0", padding: 10 }}>
-            <strong>{e.title}</strong> - {e.date} ({e.type})
-            <p>{e.details}</p>
-          </div>
-        ))}
-        <button onClick={() => exportToExcel(events)}>Export Events to Excel</button>
-      </section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RECC • Ms. Yandolino — Class Mom Portal</title>
+  <link rel="stylesheet" href="styles.css" />
+  <!-- SheetJS for real .xlsx export -->
+  <script defer src="https://cdn.jsdelivr.net/npm/xlsx@0.20.2/dist/xlsx.full.min.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap">
+      <div>
+        <h1>RECC • Class Mom Portal</h1>
+        <p>Teacher: <strong>Ms. Yandolino</strong></p>
+      </div>
+      <nav>
+        <a class="btn" href="https://www.bellmoreschools.org/o/recc" target="_blank" rel="noreferrer">School Calendar</a>
+      </nav>
     </div>
-  );
-}
-```
+  </header>
 
----
+  <main class="wrap">
+    <!-- Roster -->
+    <section class="card">
+      <h2>Class Roster</h2>
+      <div class="row">
+        <input id="new-student" type="text" placeholder="Add student and press Enter" />
+        <button id="export-roster" class="btn">Export Roster (.xlsx)</button>
+      </div>
+      <ul id="roster" class="list"></ul>
+      <small class="muted">Roster is automatically kept in A–Z order.</small>
+    </section>
 
-**To push to your GitHub repo:**
-```bash
-# Inside your project folder
-git init
-git add .
-git commit -m "Initial commit"
-git branch -M main
-git remote add origin https://github.com/Samanthab130/Yandolino-Class-25-26.git
-git push -u origin main
-```
+    <!-- Events -->
+    <section class="card">
+      <h2>Class Events & Parties</h2>
 
-Do you want me to also set it up so this auto-deploys to GitHub Pages after you push it?
+      <div class="grid-2">
+        <div>
+          <label class="lbl">Event Title</label>
+          <input id="ev-title" type="text" placeholder="e.g., Fall Harvest Party" />
+        </div>
+        <div>
+          <label class="lbl">Date</label>
+          <input id="ev-date" type="date" />
+        </div>
+        <div>
+          <label class="lbl">Type</label>
+          <select id="ev-type">
+            <option>Party</option>
+            <option>Class</option>
+            <option>Field</option>
+          </select>
+        </div>
+        <div>
+          <label class="lbl">Details</label>
+          <input id="ev-details" type="text" placeholder="Notes, allergy info, etc." />
+        </div>
+      </div>
+
+      <div class="row">
+        <button id="add-event" class="btn">Add Event</button>
+        <button id="export-events" class="btn secondary">Export Events (.xlsx)</button>
+      </div>
+
+      <div id="events" class="events"></div>
+      <small class="muted">Click “Edit sign-ups” on an event to assign Snacks, Supplies, and Volunteers.</small>
+    </section>
+  </main>
+
+  <footer class="wrap footer">
+    <small>© <span id="yy"></span> RECC Kindergarten • Made for families</small>
+  </footer>
+</body>
+</html>
