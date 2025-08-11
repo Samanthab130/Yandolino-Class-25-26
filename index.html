@@ -50,4 +50,48 @@
     </section>
 
     <!-- EVENTS -->
-    <section id="pane
+    <section id="panel-events" class="panel is-hidden" role="tabpanel" aria-labelledby="tab-events">
+      <div class="card">
+        <h2>Holiday & Class Events</h2>
+        <p class="muted">Add events, then click “Edit sign-ups” to assign snacks, supplies, and volunteers.</p>
+
+        <div class="grid-2">
+          <div>
+            <label class="lbl" for="ev-title">Event Title</label>
+            <input id="ev-title" type="text" placeholder="e.g., Winter Celebration" />
+          </div>
+          <div>
+            <label class="lbl" for="ev-date">Date</label>
+            <input id="ev-date" type="date" />
+          </div>
+          <div>
+            <label class="lbl" for="ev-type">Type</label>
+            <select id="ev-type">
+              <option>Party</option>
+              <option>Class</option>
+              <option>Field</option>
+            </select>
+          </div>
+          <div>
+            <label class="lbl" for="ev-details">Details</label>
+            <input id="ev-details" type="text" placeholder="Notes, allergy info, etc." />
+          </div>
+        </div>
+
+        <div class="row">
+          <button id="add-event" class="btn">Add Event</button>
+          <button id="export-events" class="btn ghost">Export Events (.xlsx)</button>
+        </div>
+
+        <div id="events" class="events"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="yy"></span> RECC Kindergarten • Made for families</small>
+    </div>
+  </footer>
+</body>
+</html>
