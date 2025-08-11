@@ -1,0 +1,107 @@
+Here’s the full code for your **Yandolino-Class-25-26** project, ready to add to GitHub:
+
+---
+
+**src/App.js**
+```javascript
+import React, { useState } from "react";
+import * as XLSX from "xlsx";
+
+const TEACHER_NAME = "Ms. Yandolino";
+const SCHOOL_NAME = "Charles A. Reinhard Early Childhood Center";
+const SCHOOL_SHORT = "RECC";
+const SCHOOL_CALENDAR_URL = "https://www.bellmoreschools.org/o/recc";
+
+const INITIAL_STUDENTS = [
+  "Aria Glenis",
+  "Blake Stein",
+  "Christopher Oakes",
+  "Cora Yakubovsky",
+  "Giovani Guidice",
+  "Hazel Maksym",
+  "Ivy Ducharme",
+  "Johanna Rodriguez",
+  "Leonardo Cocuzzo",
+  "Mila Yakubovsky",
+  "Nicko Glenis",
+  "Olivia Barracca",
+  "RJ Cigna",
+  "Ryan Burstein",
+  "Sienna Bomparola",
+  "Zachary Maya"
+].sort();
+
+const PRESET_EVENTS = [
+  { title: "Welcome Breakfast", date: "2025-09-05", details: "Coffee, juice, and muffins after drop-off.", type: "Class", snacks: [], supplies: [], volunteers: [] },
+  { title: "Fall Harvest Party", date: "2025-10-31", details: "Costumes optional, nut-free snacks.", type: "Party", snacks: [], supplies: [], volunteers: [] },
+];
+
+function exportToExcel(events) {
+  const data = events.map(e => ({
+    Title: e.title,
+    Date: e.date,
+    Type: e.type,
+    Details: e.details,
+    Snacks: (e.snacks || []).join(", "),
+    Supplies: (e.supplies || []).join(", "),
+    Volunteers: (e.volunteers || []).join(", ")
+  }));
+  const ws = XLSX.utils.json_to_sheet(data);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Events");
+  XLSX.writeFile(wb, "class_parties.xlsx");
+}
+
+export default function ClassMomApp() {
+  const [students, setStudents] = useState(INITIAL_STUDENTS);
+  const [events, setEvents] = useState(PRESET_EVENTS);
+
+  const addStudent = name => {
+    if (!name.trim()) return;
+    const updated = [...students, name.trim()].sort();
+    setStudents(updated);
+  };
+
+  return (
+    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
+      <h1>{SCHOOL_SHORT} - Kindergarten Class Mom Portal</h1>
+      <h2>Teacher: {TEACHER_NAME}</h2>
+      <a href={SCHOOL_CALENDAR_URL} target="_blank" rel="noreferrer">School Calendar</a>
+
+      <section style={{ marginTop: 20 }}>
+        <h3>Class Roster</h3>
+        <ul>
+          {students.map(s => <li key={s}>{s}</li>)}
+        </ul>
+        <input type="text" placeholder="Add Student" onKeyDown={e => e.key === 'Enter' && addStudent(e.target.value)} />
+      </section>
+
+      <section style={{ marginTop: 20 }}>
+        <h3>Events</h3>
+        {events.map((e, idx) => (
+          <div key={idx} style={{ border: "1px solid #ccc", margin: "10px 0", padding: 10 }}>
+            <strong>{e.title}</strong> - {e.date} ({e.type})
+            <p>{e.details}</p>
+          </div>
+        ))}
+        <button onClick={() => exportToExcel(events)}>Export Events to Excel</button>
+      </section>
+    </div>
+  );
+}
+```
+
+---
+
+**To push to your GitHub repo:**
+```bash
+# Inside your project folder
+git init
+git add .
+git commit -m "Initial commit"
+git branch -M main
+git remote add origin https://github.com/Samanthab130/Yandolino-Class-25-26.git
+git push -u origin main
+```
+
+Do you want me to also set it up so this auto-deploys to GitHub Pages after you push it?
